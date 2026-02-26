@@ -28,3 +28,6 @@ from django.urls import path, include
 urlpatterns = [
     path('api/', include('store.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+
+
