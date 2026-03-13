@@ -9,7 +9,7 @@ from .serializers import (
     DiscountSerializer, DLCSerializer
 )
 
-# --- Игры, категории и т.д. ---
+
 class GameViewSet(viewsets.ModelViewSet):
     queryset = Game.objects.all()
     serializer_class = GameSerializer
@@ -41,7 +41,7 @@ class DLCViewSet(viewsets.ModelViewSet):
     queryset = DLC.objects.all()
     serializer_class = DLCSerializer
 
-# --- Корзина без авторизации ---
+
 class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
@@ -51,16 +51,15 @@ class OrderViewSet(viewsets.ModelViewSet):
         game_id = request.data.get("game_id")
         quantity = int(request.data.get("quantity", 1))
 
-        # Проверка, что игра существует
         try:
             game = Game.objects.get(id=game_id)
         except Game.DoesNotExist:
             return Response({"error": "Game not found"}, status=404)
 
-        # Берём единственную корзину (или создаём)
+        
         order, _ = Order.objects.get_or_create(is_paid=False)
 
-        # Добавляем или обновляем количество
+        
         item, created = OrderItem.objects.get_or_create(order=order, game=game)
         if not created:
             item.quantity += quantity
