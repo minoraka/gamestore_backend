@@ -1,12 +1,13 @@
 from django.contrib import admin
 from django.urls import path, include
 from rest_framework import routers
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from store.views import (
     GameViewSet, CategoryViewSet, PlatformViewSet, OrderViewSet,
     PublisherViewSet, TagViewSet, DiscountViewSet, DLCViewSet
 )
 
-# Роутер DRF для всех ViewSet
+
 router = routers.DefaultRouter()
 router.register("games", GameViewSet)
 router.register("categories", CategoryViewSet)
@@ -50,4 +51,9 @@ urlpatterns = [
     path("", RedirectView.as_view(url="/api/", permanent=False)),  
     path("swagger/", schema_view.with_ui("swagger", cache_timeout=0)),
     path("redoc/", schema_view.with_ui("redoc", cache_timeout=0)),
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]
+
+
+

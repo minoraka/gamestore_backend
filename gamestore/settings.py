@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'django_filters',
     'store',
+    'drf_yasg'
 ]
 
 REST_FRAMEWORK = {
