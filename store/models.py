@@ -6,14 +6,14 @@ class Category(models.Model):
     name = models.CharField(max_length=255)
 
     def __str__(self):
-        return self.name 
+        return self.name
 
 
 class Platform(models.Model):
     name = models.CharField(max_length=255)
 
     def __str__(self):
-        return self.name 
+        return self.name
 
 
 class Publisher(models.Model):
@@ -21,14 +21,14 @@ class Publisher(models.Model):
     website = models.URLField(blank=True, null=True)
 
     def __str__(self):
-        return self.name 
+        return self.name
 
 
 class Tag(models.Model):
     name = models.CharField(max_length=100)
 
     def __str__(self):
-        return self.name 
+        return self.name
 
 
 class Game(models.Model):
@@ -37,16 +37,14 @@ class Game(models.Model):
     description = models.TextField()
     price = models.DecimalField(max_digits=10, decimal_places=2)
     image = models.ImageField(upload_to="games/", blank=True, null=True)
-
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True)
     platform = models.ManyToManyField(Platform)
     publisher = models.ForeignKey(Publisher, on_delete=models.SET_NULL, null=True)
     tags = models.ManyToManyField(Tag, blank=True)
-
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.name 
+        return self.title
 
 
 class Discount(models.Model):
@@ -57,7 +55,7 @@ class Discount(models.Model):
     end_date = models.DateField()
 
     def __str__(self):
-        return self.name 
+        return f"Discount {self.percent}% for {self.game.title}"
 
 
 class DLC(models.Model):
@@ -67,7 +65,7 @@ class DLC(models.Model):
     release_date = models.DateField(null=True, blank=True)
 
     def __str__(self):
-        return self.name 
+        return self.title
 
 
 class Order(models.Model):
@@ -76,7 +74,7 @@ class Order(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return self.name 
+        return f"Order #{self.id} - {self.user}"
 
 
 class OrderItem(models.Model):
@@ -85,4 +83,4 @@ class OrderItem(models.Model):
     quantity = models.PositiveIntegerField(default=1)
 
     def __str__(self):
-        return self.name 
+        return f"{self.game.title} x{self.quantity}"
