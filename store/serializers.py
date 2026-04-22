@@ -38,7 +38,37 @@ class DLCSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+from rest_framework import serializers
+from .models import Game, Category, Platform, Publisher, Tag
+
+
 class GameSerializer(serializers.ModelSerializer):
+    category_id = serializers.PrimaryKeyRelatedField(
+        queryset=Category.objects.all(),
+        source="category",
+        write_only=True
+    )
+
+    publisher_id = serializers.PrimaryKeyRelatedField(
+        queryset=Publisher.objects.all(),
+        source="publisher",
+        write_only=True
+    )
+
+    platform_ids = serializers.PrimaryKeyRelatedField(
+        queryset=Platform.objects.all(),
+        many=True,
+        source="platform",
+        write_only=True
+    )
+
+    tag_ids = serializers.PrimaryKeyRelatedField(
+        queryset=Tag.objects.all(),
+        many=True,
+        source="tags",
+        write_only=True
+    )
+
     category = CategorySerializer(read_only=True)
     publisher = PublisherSerializer(read_only=True)
     platform = PlatformSerializer(many=True, read_only=True)
